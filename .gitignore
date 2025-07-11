@@ -1,0 +1,12 @@
+target/
+
+*.iml
+*.jar
+*.jks
+
+/config.yml
+/lang.yml
+/Old/
+/plugins/
+/files/
+/tomcat.8080/
