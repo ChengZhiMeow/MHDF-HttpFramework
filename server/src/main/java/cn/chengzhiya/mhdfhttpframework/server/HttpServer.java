@@ -195,6 +195,7 @@ public class HttpServer extends HttpServlet implements Server {
             throw new RuntimeException("接口方法必须为 static");
         }
 
+        JSONObject body = HttpServerUtil.getRequestBody(request);
         for (Parameter parameter : method.getParameters()) {
             // 获取基础HTTP参数
             {
@@ -226,7 +227,6 @@ public class HttpServer extends HttpServlet implements Server {
                 if (annotation != null) {
                     Object value = defaultValue;
 
-                    JSONObject body = HttpServerUtil.getRequestBody(request);
                     if (body != null) {
                         String key = annotation.value();
                         value = key.equals("body") ? body : body.getObject(key, parameter.getType());

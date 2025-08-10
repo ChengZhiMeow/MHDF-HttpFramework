@@ -45,14 +45,14 @@ _✨速度快、易上手、易开发✨_
    <dependency>
       <groupId>cn.chengzhiya</groupId>
       <artifactId>MHDF-Framework-client</artifactId>
-      <version>1.0.4</version>
+      <version>1.0.5</version>
       <scope>compile</scope>
    </dependency>
 
    <dependency>
       <groupId>cn.chengzhiya</groupId>
       <artifactId>MHDF-Framework-server</artifactId>
-      <version>1.0.4</version>
+      <version>1.0.5</version>
       <scope>compile</scope>
    </dependency>
 </dependencies>
