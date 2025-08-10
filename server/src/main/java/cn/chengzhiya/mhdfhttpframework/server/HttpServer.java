@@ -183,9 +183,10 @@ public class HttpServer extends HttpServlet implements Server {
      * @param request  请求实例
      * @param response 回应实例
      * @param method   请求方法实例
+     * @param body 请求数据实例
      * @return 结束处理后续方法
      */
-    private boolean handleRequestMethod(HttpServletRequest request, HttpServletResponse response, Method method) {
+    private boolean handleRequestMethod(HttpServletRequest request, HttpServletResponse response, Method method, JSONObject body) {
         List<Object> parameterList = new ArrayList<>();
 
         if (!Modifier.isPublic(method.getModifiers())) {
@@ -195,7 +196,6 @@ public class HttpServer extends HttpServlet implements Server {
             throw new RuntimeException("接口方法必须为 static");
         }
 
-        JSONObject body = HttpServerUtil.getRequestBody(request);
         for (Parameter parameter : method.getParameters()) {
             // 获取基础HTTP参数
             {
@@ -306,8 +306,9 @@ public class HttpServer extends HttpServlet implements Server {
         String path = uri.substring(0, uri.lastIndexOf("/"));
         String methodPath = uri.substring(path.length());
 
+        JSONObject body = HttpServerUtil.getRequestBody(request);
         for (Method method : this.getRequestMethodList(path, methodPath, type)) {
-            if (this.handleRequestMethod(request, response, method)) {
+            if (this.handleRequestMethod(request, response, method, body)) {
                 return;
             }
         }
