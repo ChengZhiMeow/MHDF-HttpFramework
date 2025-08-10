@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -186,6 +187,14 @@ public class HttpServer extends HttpServlet implements Server {
      */
     private boolean handleRequestMethod(HttpServletRequest request, HttpServletResponse response, Method method) {
         List<Object> parameterList = new ArrayList<>();
+
+        if (!Modifier.isPublic(method.getModifiers())) {
+            throw new RuntimeException("接口方法必须为 public");
+        }
+        if (!Modifier.isStatic(method.getModifiers())) {
+            throw new RuntimeException("接口方法必须为 static");
+        }
+
         for (Parameter parameter : method.getParameters()) {
             // 获取基础HTTP参数
             {
@@ -213,7 +222,7 @@ public class HttpServer extends HttpServlet implements Server {
 
             // 获取请求数据中的数据
             {
-                BodyData annotation = method.getAnnotation(BodyData.class);
+                BodyData annotation = parameter.getAnnotation(BodyData.class);
                 if (annotation != null) {
                     Object value = defaultValue;
 
@@ -252,7 +261,7 @@ public class HttpServer extends HttpServlet implements Server {
 
             // 获取请求参数中的数据
             {
-                RequestParam annotation = method.getAnnotation(RequestParam.class);
+                RequestParam annotation = parameter.getAnnotation(RequestParam.class);
                 if (annotation != null) {
                     Object value = defaultValue;
 
@@ -279,7 +288,7 @@ public class HttpServer extends HttpServlet implements Server {
             Object obj = method.invoke(null, parameterList.toArray());
             if (obj instanceof Boolean) return (Boolean) obj;
         } catch (Exception e) {
-            throw new RuntimeException("接口方法必须为 static", e);
+            throw new RuntimeException(e);
         }
 
         return true;
