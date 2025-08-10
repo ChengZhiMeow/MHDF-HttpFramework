@@ -50,7 +50,7 @@ public interface Client {
      * @return 数据
      */
     default String get(String urlString) throws RequestException, ConnectionException, URLException {
-        return request(urlString, RequestTypes.GET, null);
+        return this.request(urlString, RequestTypes.GET, null);
     }
 
     /**
@@ -61,6 +61,6 @@ public interface Client {
      * @return 数据
      */
     default String post(String urlString, String data) throws RequestException, ConnectionException, URLException {
-        return request(urlString, RequestTypes.GET, data);
+        return this.request(urlString, RequestTypes.GET, data);
     }
 }

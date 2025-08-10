@@ -127,7 +127,7 @@ public class HttpServer extends HttpServlet implements Server {
                 Tomcat.addServlet(context, "dispatcherServlet", this);
                 context.addServletMappingDecoded("/", "dispatcherServlet");
 
-                for (FilterConfig filterConfig : getFilterConfigList()) {
+                for (FilterConfig filterConfig : this.getFilterConfigList()) {
                     switch (filterConfig.getType()) {
                         case URL -> context.addFilterMap(filterConfig.toFilterMap());
                         case ENTITY -> context.addFilterDef(filterConfig.toFilterDef());
@@ -198,39 +198,54 @@ public class HttpServer extends HttpServlet implements Server {
                 }
             }
 
-            // 获取请求数据中的数据
-            {
-                BodyData annotation = method.getAnnotation(BodyData.class);
-                if (annotation != null) {
-                    JSONObject body = HttpServerUtil.getRequestBody(request);
-                    if (body != null) {
-                        String key = annotation.value();
-
-                        if (key.equals("body")) parameterList.add(body);
-                        else parameterList.add(body.getObject(key, parameter.getType()));
-                        continue;
-                    }
-                }
-            }
-
-            String paramData = null;
+            Object defaultValue = null;
 
             // 设定默认值
             {
                 DefaultValue annotation = parameter.getAnnotation(DefaultValue.class);
-                if (annotation != null) paramData = annotation.value();
+                if (annotation != null) {
+                    defaultValue = HttpServerUtil.converter(
+                            parameter.getType(),
+                            annotation.value()
+                    );
+                }
+            }
+
+            // 获取请求数据中的数据
+            {
+                BodyData annotation = method.getAnnotation(BodyData.class);
+                if (annotation != null) {
+                    Object value = defaultValue;
+
+                    JSONObject body = HttpServerUtil.getRequestBody(request);
+                    if (body != null) {
+                        String key = annotation.value();
+                        value = key.equals("body") ? body : body.getObject(key, parameter.getType());
+                    }
+
+                    parameterList.add(value);
+                }
             }
 
             // 获取cookie中的数据
             {
                 if (request.getCookies() != null) {
                     CookieData annotation = parameter.getAnnotation(CookieData.class);
-                    if (annotation != null) for (Cookie cookie : request.getCookies()) {
-                        if (!cookie.getName().equals(annotation.value())) continue;
-                        if (cookie.getValue() == null) continue;
+                    if (annotation != null) {
+                        Object value = defaultValue;
 
-                        paramData = cookie.getValue();
-                        break;
+                        for (Cookie cookie : request.getCookies()) {
+                            if (!cookie.getName().equals(annotation.value())) continue;
+                            if (cookie.getValue() == null) continue;
+
+                            value = HttpServerUtil.converter(
+                                    parameter.getType(),
+                                    cookie.getValue()
+                            );
+                            break;
+                        }
+
+                        parameterList.add(value);
                     }
                 }
             }
@@ -239,15 +254,20 @@ public class HttpServer extends HttpServlet implements Server {
             {
                 RequestParam annotation = method.getAnnotation(RequestParam.class);
                 if (annotation != null) {
-                    String value = request.getParameter(annotation.value());
-                    if (value != null) paramData = value;
+                    Object value = defaultValue;
+
+                    String param = request.getParameter(annotation.value());
+                    if (param != null) {
+                        value = HttpServerUtil.converter(
+                                parameter.getType(),
+                                param
+                        );
+                    }
+
+                    parameterList.add(value);
                 }
             }
 
-            parameterList.add(HttpServerUtil.converter(
-                    parameter.getType(),
-                    paramData
-            ));
         }
 
         boolean ignoreNullParam = method.getAnnotation(IgnoreNullParam.class) != null;

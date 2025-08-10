@@ -22,12 +22,12 @@ public final class FilterConfig {
 
     public FilterConfig(String name, Filter filter) {
         this(name);
-        setFilter(filter);
+        this.setFilter(filter);
     }
 
     public FilterConfig(String name, String urlPattern) {
         this(name);
-        setUrlPattern(urlPattern);
+        this.setUrlPattern(urlPattern);
     }
 
     public void setFilter(Filter filter) {
@@ -42,16 +42,16 @@ public final class FilterConfig {
 
     public FilterDef toFilterDef() {
         FilterDef filterDef = new FilterDef();
-        filterDef.setFilterName(name);
-        filterDef.setFilter(filter);
+        filterDef.setFilterName(this.name);
+        filterDef.setFilter(this.filter);
 
         return filterDef;
     }
 
     public FilterMap toFilterMap() {
         FilterMap filterMap = new FilterMap();
-        filterMap.setFilterName(getName());
-        filterMap.addURLPattern(urlPattern);
+        filterMap.setFilterName(this.getName());
+        filterMap.addURLPattern(this.urlPattern);
 
         return filterMap;
     }

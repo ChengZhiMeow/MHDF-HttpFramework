@@ -37,7 +37,7 @@ public final class HttpServerUtil {
             return;
         }
 
-        response.setContentType(getFilContentType(file));
+        response.setContentType(HttpServerUtil.getFilContentType(file));
         try {
             try (InputStream in = Files.newInputStream(file.toPath())) {
                 try (OutputStream out = response.getOutputStream()) {

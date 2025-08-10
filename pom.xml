@@ -7,7 +7,7 @@
     <groupId>cn.chengzhiya</groupId>
     <artifactId>MHDF-HttpFramework</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <properties>
         <env.java.version>21</env.java.version>

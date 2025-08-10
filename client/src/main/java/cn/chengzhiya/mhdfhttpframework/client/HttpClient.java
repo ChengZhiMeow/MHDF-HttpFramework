@@ -33,8 +33,8 @@ public class HttpClient implements Client {
     private boolean ignoreSSL = false;
 
     public HttpClient() {
-        getHeaderHashMap().put("Content-Type", "application/json");
-        getHeaderHashMap().put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0");
+        this.getHeaderHashMap().put("Content-Type", "application/json");
+        this.getHeaderHashMap().put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0");
     }
 
     @Override
@@ -45,17 +45,17 @@ public class HttpClient implements Client {
     @Override
     public HttpURLConnection getConnection(String urlString) throws URLException, ConnectionException {
         try {
-            URL url = URI.create(formatUrl(urlString)).toURL();
+            URL url = URI.create(this.formatUrl(urlString)).toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            getHeaderHashMap().forEach(connection::setRequestProperty);
-            if (!getCookieHashMap().isEmpty()) {
-                connection.setRequestProperty("Cookie", getCookieHeader());
+            this.getHeaderHashMap().forEach(connection::setRequestProperty);
+            if (!this.getCookieHashMap().isEmpty()) {
+                connection.setRequestProperty("Cookie", this.getCookieHeader());
             }
-            connection.setConnectTimeout(getTimeout());
-            connection.setReadTimeout(getTimeout());
+            connection.setConnectTimeout(this.getTimeout());
+            connection.setReadTimeout(this.getTimeout());
 
             if (connection instanceof HttpsURLConnection httpsConnection) {
-                if (isIgnoreSSL()) {
+                if (this.isIgnoreSSL()) {
                     TrustManager[] trustManagers = new TrustManager[]{
                             new X509TrustManager() {
                                 public X509Certificate[] getAcceptedIssuers() {
@@ -106,7 +106,7 @@ public class HttpClient implements Client {
     @Override
     public String request(String urlString, RequestTypes requestType, String data) throws RequestException, ConnectionException, URLException {
         try {
-            HttpURLConnection connection = getConnection(urlString);
+            HttpURLConnection connection = this.getConnection(urlString);
             Objects.requireNonNull(connection).setRequestMethod(requestType.name());
 
             if (data != null && !data.isEmpty()) {
@@ -130,7 +130,7 @@ public class HttpClient implements Client {
                 }
             }
 
-            return getData(connection);
+            return this.getData(connection);
         } catch (RequestException e) {
             return null;
         } catch (IOException e) {
@@ -146,7 +146,7 @@ public class HttpClient implements Client {
     public String getCookieHeader() {
         StringBuilder builder = new StringBuilder();
 
-        for (Map.Entry<String, String> entry : getCookieHashMap().entrySet()) {
+        for (Map.Entry<String, String> entry : this.getCookieHashMap().entrySet()) {
             builder
                     .append(entry.getKey())
                     .append("=")
@@ -165,7 +165,7 @@ public class HttpClient implements Client {
      * @return 数据
      */
     public String post(String urlString) throws URLException, RequestException, ConnectionException {
-        return post(urlString, null);
+        return super.post(urlString, null);
     }
 
     /**
@@ -193,7 +193,7 @@ public class HttpClient implements Client {
      * @return 文件数据
      */
     public byte[] downloadFile(String url) throws DownloadException, URLException, ConnectionException {
-        return downloadFile(getConnection(url));
+        return this.downloadFile(this.getConnection(url));
     }
 
     /**
@@ -204,7 +204,7 @@ public class HttpClient implements Client {
      */
     public void downloadFile(URLConnection connection, Path savePath) throws DownloadException {
         try {
-            Files.write(savePath, downloadFile(connection));
+            Files.write(savePath, this.downloadFile(connection));
         } catch (IOException e) {
             throw new DownloadException(e);
         }
@@ -217,6 +217,6 @@ public class HttpClient implements Client {
      * @param savePath 保存目录
      */
     public void downloadFile(String url, Path savePath) throws DownloadException, URLException, ConnectionException {
-        downloadFile(getConnection(url), savePath);
+        this.downloadFile(this.getConnection(url), savePath);
     }
 }

@@ -19,7 +19,7 @@ public enum RequestTypes {
      * @return 结果
      */
     public boolean isRequestType(RequestTypes target) {
-        if (this == ALL) return true;
+        if (this == RequestTypes.ALL) return true;
         return this == target;
     }
 }
