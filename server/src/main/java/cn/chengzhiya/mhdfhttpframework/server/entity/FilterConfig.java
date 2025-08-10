@@ -2,12 +2,14 @@ package cn.chengzhiya.mhdfhttpframework.server.entity;
 
 import cn.chengzhiya.mhdfhttpframework.server.enums.FilterType;
 import lombok.Getter;
+import lombok.ToString;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
 
 import javax.servlet.Filter;
 
 @Getter
+@ToString
 public final class FilterConfig {
     private final String name;
     private FilterType type;

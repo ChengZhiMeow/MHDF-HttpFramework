@@ -2,9 +2,11 @@ package cn.chengzhiya.mhdfhttpframework.server.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public final class SSLConfig {
     private boolean enable;
     private String alias;

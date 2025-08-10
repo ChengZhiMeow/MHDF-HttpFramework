@@ -3,10 +3,12 @@ package cn.chengzhiya.mhdfhttpframework.server.entity;
 import cn.chengzhiya.mhdfhttpframework.api.enums.RequestTypes;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-public class Path {
+@ToString
+public final class Path {
     private String path;
     private RequestTypes type;
 

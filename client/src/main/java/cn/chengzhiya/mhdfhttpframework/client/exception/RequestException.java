@@ -1,6 +1,6 @@
 package cn.chengzhiya.mhdfhttpframework.client.exception;
 
-public class RequestException extends Exception {
+public final class RequestException extends Exception {
     public RequestException(String s) {
         super(s);
     }
