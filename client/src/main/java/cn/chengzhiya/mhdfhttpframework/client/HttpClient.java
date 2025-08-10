@@ -165,7 +165,7 @@ public class HttpClient implements Client {
      * @return 数据
      */
     public String post(String urlString) throws URLException, RequestException, ConnectionException {
-        return super.post(urlString, null);
+        return this.post(urlString, null);
     }
 
     /**
