@@ -155,8 +155,8 @@ public class HttpServer extends HttpServlet implements Server {
     private List<Method> getRequestMethodList(String path, String methodPath, RequestTypes type) {
         if (path.isEmpty()) path = methodPath;
 
-        String controllerKey = this.getControllerlHashMap().containsKey(path) ? path : "/default";
-        Map<Path, List<Method>> methodMap = this.getControllerlHashMap().getOrDefault(controllerKey, new HashMap<>());
+        Map<Path, List<Method>> methodMap = this.getControllerlHashMap().getOrDefault(path, new HashMap<>());
+        methodMap.putAll(this.getControllerlHashMap().getOrDefault("/default", new HashMap<>()));
 
         List<Method> list = new ArrayList<>();
         methodMap.entrySet().stream()
