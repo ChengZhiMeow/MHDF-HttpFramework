@@ -61,6 +61,6 @@ public interface Client {
      * @return 数据
      */
     default String post(String urlString, String data) throws RequestException, ConnectionException, URLException {
-        return this.request(urlString, RequestTypes.GET, data);
+        return this.request(urlString, RequestTypes.POST, data);
     }
 }
