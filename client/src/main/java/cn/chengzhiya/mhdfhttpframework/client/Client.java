@@ -41,7 +41,7 @@ public interface Client {
      * @param data        负载数据
      * @return 数据
      */
-    String request(String urlString, RequestTypes requestType, String data) throws RequestException, ConnectionException, URLException;
+    String request(String urlString, RequestTypes requestType, byte[] data) throws RequestException, ConnectionException, URLException;
 
     /**
      * 发送GET请求并尝试获取数据
@@ -60,7 +60,18 @@ public interface Client {
      * @param data      负载数据
      * @return 数据
      */
-    default String post(String urlString, String data) throws RequestException, ConnectionException, URLException {
+    default String post(String urlString, byte[] data) throws RequestException, ConnectionException, URLException {
         return this.request(urlString, RequestTypes.POST, data);
+    }
+
+    /**
+     * 发送POST请求并尝试获取数据
+     *
+     * @param urlString 请求地址
+     * @param string    负载字符串
+     * @return 数据
+     */
+    default String post(String urlString, String string) throws RequestException, ConnectionException, URLException {
+        return this.post(urlString, string.getBytes());
     }
 }

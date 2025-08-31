@@ -104,15 +104,15 @@ public class HttpClient implements Client {
     }
 
     @Override
-    public String request(String urlString, RequestTypes requestType, String data) throws RequestException, ConnectionException, URLException {
+    public String request(String urlString, RequestTypes requestType, byte[] data) throws RequestException, ConnectionException, URLException {
         try {
             HttpURLConnection connection = this.getConnection(urlString);
             Objects.requireNonNull(connection).setRequestMethod(requestType.name());
 
-            if (data != null && !data.isEmpty()) {
+            if (data != null && data.length != 0) {
                 connection.setDoOutput(true);
                 try (OutputStream out = connection.getOutputStream()) {
-                    out.write(data.getBytes());
+                    out.write(data);
                     out.flush();
                 }
             }
@@ -135,7 +135,7 @@ public class HttpClient implements Client {
             return null;
         } catch (ConnectException e) {
             throw new ConnectionException(e);
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new RequestException(e);
         }
     }
@@ -167,7 +167,7 @@ public class HttpClient implements Client {
      * @return 数据
      */
     public String post(String urlString) throws URLException, RequestException, ConnectionException {
-        return this.post(urlString, null);
+        return this.post(urlString, (byte[]) null);
     }
 
     /**
