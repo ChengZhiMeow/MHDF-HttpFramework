@@ -133,8 +133,10 @@ public class HttpClient implements Client {
             return this.getData(connection);
         } catch (RequestException e) {
             return null;
-        } catch (IOException e) {
-            throw new RequestException("找不到请求类型: " + requestType.name());
+        } catch (ConnectException e) {
+            throw new ConnectionException(e);
+        }catch (IOException e) {
+            throw new RequestException(e);
         }
     }
 
