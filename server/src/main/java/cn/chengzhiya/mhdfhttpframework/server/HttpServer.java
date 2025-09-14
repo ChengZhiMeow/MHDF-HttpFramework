@@ -12,6 +12,7 @@ import com.alibaba.fastjson2.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.catalina.Context;
+import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.reflections.Reflections;
@@ -39,6 +40,7 @@ public class HttpServer extends HttpServlet implements Server {
     private final Map<String, Map<Path, List<Method>>> controllerlHashMap = new HashMap<>();
     private final List<FilterConfig> filterConfigList = new ArrayList<>();
     private Tomcat server;
+    private Thread thread;
 
     @Setter
     private ServerStatus status = ServerStatus.STOPPED;
@@ -117,7 +119,7 @@ public class HttpServer extends HttpServlet implements Server {
     @Override
     public void start() {
         this.setStatus(ServerStatus.STARTING);
-        new Thread(() -> {
+        this.thread = new Thread(() -> {
             try {
                 this.server = new Tomcat();
 
@@ -143,7 +145,20 @@ public class HttpServer extends HttpServlet implements Server {
                 //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
-        }).start();
+        });
+        this.thread.start();
+    }
+
+    @Override
+    public void stop() {
+        try {
+            this.server.stop();
+            this.thread.interrupt();
+            this.setStatus(ServerStatus.STOPPED);
+        } catch (Exception e) {
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
+        }
     }
 
     /**

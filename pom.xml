@@ -7,7 +7,7 @@
     <groupId>cn.chengzhiya</groupId>
     <artifactId>MHDF-HttpFramework</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
 
     <properties>
         <env.java.version>21</env.java.version>
@@ -36,9 +36,8 @@
 
     <distributionManagement>
         <repository>
-            <id>chengzhimeow-maven-repo-releases</id>
-            <name>橙汁喵の仓库</name>
-            <url>https://maven.chengzhimeow.cn/releases</url>
+            <id>nachorealms-repository-releases</id>
+            <url>https://repo-eo.catnies.top/releases</url>
         </repository>
     </distributionManagement>
 

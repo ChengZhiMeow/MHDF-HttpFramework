@@ -7,7 +7,7 @@
     <parent>
         <groupId>cn.chengzhiya</groupId>
         <artifactId>MHDF-HttpFramework</artifactId>
-        <version>1.0.9</version>
+        <version>1.0.10</version>
     </parent>
     <artifactId>MHDF-HttpFramework-server</artifactId>
 
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>cn.chengzhiya</groupId>
             <artifactId>MHDF-HttpFramework-api</artifactId>
-            <version>1.0.9</version>
+            <version>1.0.10</version>
             <scope>compile</scope>
         </dependency>
 
