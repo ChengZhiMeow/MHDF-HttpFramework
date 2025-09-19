@@ -7,16 +7,14 @@ import cn.chengzhiya.mhdfhttpframework.server.entity.Path;
 import cn.chengzhiya.mhdfhttpframework.server.entity.SSLConfig;
 import cn.chengzhiya.mhdfhttpframework.server.enums.ServerStatus;
 import cn.chengzhiya.mhdfhttpframework.server.filter.CorsFilter;
+import cn.chengzhiya.mhdfhttpframework.server.util.ClassUtil;
 import cn.chengzhiya.mhdfhttpframework.server.util.HttpServerUtil;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.catalina.Context;
-import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
-import org.reflections.Reflections;
-import org.reflections.util.ConfigurationBuilder;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -65,10 +63,13 @@ public class HttpServer extends HttpServlet implements Server {
     public void reloadController() {
         this.getControllerlHashMap().clear();
         try {
-            Reflections reflections = new Reflections(ConfigurationBuilder.build().forPackages(""));
+            List<Class<?>> classList = ClassUtil.getClasses();
 
-            for (Class<?> clazz : reflections.getTypesAnnotatedWith(RequestPath.class)) {
-                String path = clazz.getAnnotation(RequestPath.class).value();
+            for (Class<?> clazz : classList) {
+                RequestPath classPathAnnotation = clazz.getAnnotation(RequestPath.class);
+                if (classPathAnnotation == null) continue;
+
+                String path = classPathAnnotation.value();
                 if (!path.startsWith("/")) path = "/" + path;
 
                 Map<Path, List<Method>> map = this.getControllerlHashMap().getOrDefault(path, new HashMap<>());

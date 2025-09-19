@@ -7,7 +7,7 @@
     <parent>
         <groupId>cn.chengzhiya</groupId>
         <artifactId>MHDF-HttpFramework</artifactId>
-        <version>1.0.10</version>
+        <version>1.0.11</version>
     </parent>
     <artifactId>MHDF-HttpFramework-server</artifactId>
 
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>cn.chengzhiya</groupId>
             <artifactId>MHDF-HttpFramework-api</artifactId>
-            <version>1.0.10</version>
+            <version>1.0.11</version>
             <scope>compile</scope>
         </dependency>
 
@@ -34,13 +34,6 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>2.0.53</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.10.2</version>
             <scope>compile</scope>
         </dependency>
 

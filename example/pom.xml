@@ -7,7 +7,7 @@
     <groupId>cn.chengzhiya</groupId>
     <artifactId>MHDF-HttpFramework-example</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.10</version>
+    <version>1.0.11</version>
 
     <properties>
         <java.version>21</java.version>
@@ -69,13 +69,13 @@
         <dependency>
             <groupId>cn.chengzhiya</groupId>
             <artifactId>MHDF-HttpFramework-client</artifactId>
-            <version>1.0.10</version>
+            <version>1.0.11</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.chengzhiya</groupId>
             <artifactId>MHDF-HttpFramework-server</artifactId>
-            <version>1.0.10</version>
+            <version>1.0.11</version>
             <scope>compile</scope>
         </dependency>
 
